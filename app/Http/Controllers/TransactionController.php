@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\TransactionCreated;
+use App\Events\TransactionDeleted;
 use App\Events\TransactionUpdated;
 use App\Helpers\Helper;
 use App\Transaction;
@@ -44,11 +45,11 @@ class TransactionController extends Controller
         $request->validate([
             'code' => ['required', new TransactionCode($request->get('type'))],
             'type' => 'required|in:' . Helper::transactionTypeStr(),
-            'quantity' => ['required', 'numeric', new SellQuantity($request->get('type'), $request->get('code'))],
+            'quantity' => ['required', 'numeric', 'min:1', new SellQuantity($request->get('type'), $request->get('code'))],
             'date' => 'required|date'
         ]);
 
-
+        $available =  $request->get('type') == config('constants.transaction.type.buy') ? $request->get('quantity') : 0;
         $transaction = new  Transaction([
             'code' => $request->get('code'),
             'type' => $request->get('type'),
@@ -99,7 +100,7 @@ class TransactionController extends Controller
         $request->validate([
             'code' => 'required',
             'type' => 'required|in:' . Helper::transactionTypeStr(),
-            'quantity' => 'required|numeric',
+            'quantity' => 'required|numeric|min:1',
             'date' => 'required|date'
         ]);
 
@@ -127,6 +128,8 @@ class TransactionController extends Controller
     {
         $transaction = Transaction::find($id);
         $transaction->delete();
+
+        event(new TransactionDeleted($transaction));
 
         return redirect('/transactions')->with('success', 'Deleted!');
     }
