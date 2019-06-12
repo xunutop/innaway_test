@@ -9,17 +9,20 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use DB;
 use App\SellLogs;
 use App\Helpers\Helper;
+use App\Services\ReportService;
 
 class ReportCalculate
 {
+
+    public $reportService;
     /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(ReportService $reportService)
     {
-        //
+        $this->reportService = $reportService;
     }
 
     /**
@@ -31,6 +34,7 @@ class ReportCalculate
     public function handle(SellItemCreated $event)
     {
         $sell_transaction = $event->transaction;
+//        $this->reportService->generateSellLog($sell_transaction);
         if ($sell_transaction->type == config('constants.transaction.type.buy')){
             return;
         }
@@ -80,9 +84,9 @@ class ReportCalculate
 
 
 
-
-
     }
+
+
 
 }
 
