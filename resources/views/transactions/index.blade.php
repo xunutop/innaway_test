@@ -13,7 +13,7 @@
                     <td>Ngày</td>
                     <td>Lệnh</td>
                     <td>Số lượng</td>
-{{--                    <td colspan = 2>Actions</td>--}}
+                    <td colspan = 2>Actions</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -24,16 +24,16 @@
                         <td>{{$transactions->date}}</td>
                         <td>{{Helper::transactionTypeLabel($transactions->type)}}</td>
                         <td>{{$transactions->quantity}}</td>
-{{--                        <td>--}}
-{{--                            <a href="{{ route('transactions.edit',$transactions->id)}}" class="btn btn-primary">Sửa</a>--}}
-{{--                        </td>--}}
-{{--                        <td>--}}
-{{--                            <form action="{{ route('transactions.destroy', $transactions->id)}}" method="post">--}}
-{{--                                @csrf--}}
-{{--                                @method('DELETE')--}}
-{{--                                <button class="btn btn-danger" type="submit">Xóa</button>--}}
-{{--                            </form>--}}
-{{--                        </td>--}}
+                        <td>
+                            <a href="{{ route('transactions.edit',$transactions->id)}}" class="btn btn-primary">Sửa</a>
+                        </td>
+                        <td>
+                            <form action="{{ route('transactions.destroy', $transactions->id)}}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger" type="submit">Xóa</button>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>
