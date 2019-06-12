@@ -23,7 +23,11 @@ class EventServiceProvider extends ServiceProvider
         ],
         \App\Events\TransactionUpdated::class => [
             \App\Listeners\RegenerateSellLog::class
-        ]
+        ],
+        \App\Events\TransactionDeleted::class => [
+            \App\Listeners\RegenerateSellLog::class
+        ],
+
     ];
 
     /**
@@ -35,6 +39,5 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        //
     }
 }

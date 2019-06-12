@@ -9,6 +9,7 @@ use App\Transaction;
 use DB;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Events\Event;
 
 class RegenerateSellLog
 {
@@ -31,7 +32,7 @@ class RegenerateSellLog
      * @param  TransactionUpdated  $event
      * @return void
      */
-    public function handle(TransactionUpdated $event)
+    public function handle($event)
     {
 
         $this->reportService->regenerateSellLogForCode($event->transaction);
