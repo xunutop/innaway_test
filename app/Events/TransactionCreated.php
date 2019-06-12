@@ -11,7 +11,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use App\Transaction;
 
-class SellItemCreated
+class TransactionCreated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
