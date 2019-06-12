@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TransactionCreated;
+use App\Events\TransactionUpdated;
 use App\Helpers\Helper;
 use App\Transaction;
 use Illuminate\Http\Request;
@@ -46,7 +48,7 @@ class TransactionController extends Controller
             'date' => 'required|date'
         ]);
 
-        $available =  $request->get('type') == config('constants.transaction.type.buy') ? $request->get('quantity') : 0;
+
         $transaction = new  Transaction([
             'code' => $request->get('code'),
             'type' => $request->get('type'),
@@ -54,7 +56,11 @@ class TransactionController extends Controller
             'available' => $available,
             'date' => $request->get('date'),
         ]);
+
         $transaction->save();
+
+        event(new TransactionCreated($transaction));
+
         return redirect('/transactions')->with('success', 'Saved!');
     }
 
@@ -97,13 +103,16 @@ class TransactionController extends Controller
             'date' => 'required|date'
         ]);
 
+        $available =  $request->get('type') == config('constants.transaction.type.buy') ? $request->get('quantity') : 0;
         $transaction = Transaction::find($id);
         $transaction->code = $request->get('code');
         $transaction->type = $request->get('type');
         $transaction->quantity = $request->get('quantity');
-        $transaction->available = $transaction->quantity;
+        $transaction->available = $available;
         $transaction->date= $request->get('date');
         $transaction->save();
+
+        event(new TransactionUpdated($transaction));
 
         return redirect('/transactions')->with('success', 'Updated!');
     }
