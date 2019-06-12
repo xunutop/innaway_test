@@ -18,8 +18,11 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        \App\Events\SellItemCreated::class => [
+        \App\Events\TransactionCreated::class => [
             \App\Listeners\ReportCalculate::class,
+        ],
+        \App\Events\TransactionUpdated::class => [
+            \App\Listeners\RegenerateSellLog::class
         ]
     ];
 
